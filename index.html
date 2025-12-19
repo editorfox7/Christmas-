@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magical Christmas Wish 🎄✨</title>
+<style>
+  body, html { margin:0; padding:0; font-family: Arial,sans-serif; background: linear-gradient(to bottom, #1b2735, #090a0f); color:white; overflow-x:hidden; height:100%; }
+  .snowflake { position:absolute; top:-10px; color:white; font-size:1em; user-select:none; z-index:9999; pointer-events:none; animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite; }
+  @keyframes fall { 0% { transform: translateY(0px); } 100% { transform: translateY(100vh); } }
+
+  #hero { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100vh; padding:20px; }
+  h1 { font-size:2em; margin-bottom:15px; }
+  p { margin-bottom:25px; font-size:1.2em; }
+  input[type=text] { padding:10px; margin:5px; border-radius:8px; border:none; width:200px; font-size:1em; }
+  button { padding:10px 20px; border-radius:8px; border:none; background-color:#ff3c3c; color:white; font-size:1em; cursor:pointer; margin-top:10px; }
+  button:hover { background-color:#ff6363; }
+
+  #wishCard { display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding:30px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; }
+  #wishCard h2 { margin-bottom:15px; }
+  @keyframes fadeIn { 0% { opacity:0; transform:scale(0.8); } 100% { opacity:1; transform:scale(1); } }
+
+  #giftContainer { display:none; position:relative; margin-top:20px; }
+  #giftBox { width:100px; height:100px; background:red; border-radius:15px; position:relative; cursor:pointer; margin:0 auto; animation: bounce 1s ease infinite alternate; }
+  #giftBox::before { content:""; position:absolute; width:100%; height:10px; background:gold; top:0; left:0; border-radius:5px; }
+  #giftBox.open { animation:none; background:gold; }
+  #giftMessage { display:none; text-align:center; margin-top:20px; font-size:1.2em; font-weight:bold; color:#ffeb3b; }
+
+  @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+
+  .confetti-piece { position: absolute; width:10px; height:10px; opacity:0.9; }
+
+  /* Share popup */
+  #sharePopup {
+    display:none;
+    position:fixed;
+    top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.85);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    text-align:center;
+    z-index:10000;
+    padding:20px;
+  }
+  #sharePopup button {
+    margin-top:20px;
+    padding:10px 20px;
+    background:#28a745;
+    color:white;
+    font-size:1em;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+  }
+  #sharePopup button:hover { background:#218838; }
+
+  #countdown { font-size:1.5em; margin-top:10px; color:#ffeb3b; }
+</style>
+</head>
+<body>
+
+<div id="hero">
+  <h1>🎅 Enter Your Names for a Magical Christmas Wish!</h1>
+  <p>Make your friend smile this Christmas! 🎄✨</p>
+  <input type="text" id="yourName" placeholder="Your Name" required>
+  <input type="text" id="friendName" placeholder="Friend's Name" required>
+  <button id="revealBtn">✨ Reveal Your Wish ✨</button>
+
+  <div id="wishCard">
+    <h2>Dear <span id="friendDisplay"></span>,</h2>
+    <p>🎄 This Christmas, <strong><span id="yourDisplay"></span></strong> wishes you endless joy, magical surprises, and all the cookies you can eat! 🍪✨</p>
+    <p>Keep shining bright and sharing smiles!</p>
+    <button id="shareBtn">🎁 Share this Magical Wish</button>
+
+    <div id="giftContainer">
+      <div id="giftBox"></div>
+      <div id="giftMessage">🎉 Congratulations! You unlocked a SECRET CHRISTMAS GIFT! 🌟</div>
+    </div>
+  </div>
+</div>
+
+<!-- Short Christmas Jingle -->
+<audio id="jingle" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" preload="auto"></audio>
+
+<!-- Share Popup with Countdown -->
+<div id="sharePopup">
+  <h2>🎄 Spread the Christmas Magic! 🎄</h2>
+  <p>Share this magical wish with your friends to unlock a bonus surprise!</p>
+  <div id="countdown">10</div>
+  <button id="popupShareBtn">Share Now</button>
+</div>
+
+<footer>
+  <p>Spread the Christmas magic 🎄✨</p>
+</footer>
+
+<script>
+  // Snowflake generator
+  function createSnowflake() {
+    const snowflake = document.createElement('div');
+    snowflake.classList.add('snowflake');
+    snowflake.textContent = '❄';
+    snowflake.style.left = Math.random() * window.innerWidth + 'px';
+    snowflake.style.fontSize = (Math.random()*20+10)+'px';
+    snowflake.style.animationDuration = (Math.random()*5+5)+'s';
+    document.body.appendChild(snowflake);
+    setTimeout(()=>snowflake.remove(),10000);
+  }
+  setInterval(createSnowflake, 200);
+
+  // Reveal wish
+  document.getElementById('revealBtn').addEventListener('click', function(){
+    const yourName = document.getElementById('yourName').value.trim();
+    const friendName = document.getElementById('friendName').value.trim();
+    if(!yourName || !friendName){ alert("Please enter both names!"); return; }
+    document.getElementById('friendDisplay').textContent = friendName;
+    document.getElementById('yourDisplay').textContent = yourName;
+    document.getElementById('wishCard').style.display = 'block';
+    document.getElementById('wishCard').scrollIntoView({behavior:"smooth"});
+  });
+
+  // Share button + secret gift logic
+  let shareCount = 0;
+  document.getElementById('shareBtn').addEventListener('click', function(){
+    const yourName = document.getElementById('yourName').value.trim();
+    const friendName = document.getElementById('friendName').value.trim();
+    const shareText = `🎄 Look what ${yourName} sent me! A magical Christmas wish just for me, ${friendName}! Get yours here: [INSERT_YOUR_LINK]`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+
+    shareCount++;
+    if(shareCount >= 3){
+      document.getElementById('giftContainer').style.display = 'block';
+    }
+  });
+
+  // Gift box click animation + jingle + confetti + popup
+  const giftBox = document.getElementById('giftBox');
+  giftBox.addEventListener('click', () => {
+    giftBox.classList.add('open');
+    document.getElementById('giftMessage').style.display = 'block';
+    document.getElementById('jingle').play();
+    launchConfetti();
+
+    // Show share popup with countdown after 1s
+    setTimeout(()=> {
+      document.getElementById('sharePopup').style.display = 'flex';
+      startCountdown(10);
+    }, 1000);
+  });
+
+  // Popup share button
+  document.getElementById('popupShareBtn').addEventListener('click', () => {
+    const yourName = document.getElementById('yourName').value.trim();
+    const friendName = document.getElementById('friendName').value.trim();
+    const shareText = `🎄 Look what ${yourName} sent me! A magical Christmas wish just for me, ${friendName}! Get yours here: [INSERT_YOUR_LINK]`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
+    document.getElementById('sharePopup').style.display = 'none';
+  });
+
+  // Countdown timer function
+  function startCountdown(seconds) {
+    const countdownEl = document.getElementById('countdown');
+    let counter = seconds;
+    countdownEl.textContent = counter;
+    const interval = setInterval(() => {
+      counter--;
+      countdownEl.textContent = counter;
+      if(counter <= 0){
+        clearInterval(interval);
+        countdownEl.textContent = "🎁 Bonus Surprise Unlocked!";
+      }
+    }, 1000);
+  }
+
+  // Confetti effect
+  function launchConfetti() {
+    for(let i=0;i<50;i++){
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti-piece');
+      confetti.style.left = Math.random()*window.innerWidth+'px';
+      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      document.body.appendChild(confetti);
+      let fallDuration = Math.random()*2+2;
+      confetti.animate([
+        { transform: `translateY(0px) rotate(0deg)` },
+        { transform: `translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)` }
+      ], { duration: fallDuration*1000, easing:'linear' });
+      setTimeout(()=>confetti.remove(), fallDuration*1000);
+    }
+  }
+</script>
+
+</body>
+</html>
