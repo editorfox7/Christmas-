@@ -6,8 +6,8 @@
 <title>Magical Christmas Wish 🎄✨</title>
 <style>
   body, html { margin:0; padding:0; font-family: Arial,sans-serif; background: linear-gradient(to bottom, #1b2735, #090a0f); color:white; overflow-x:hidden; height:100%; }
-  .snowflake { position:absolute; top:-10px; color:white; font-size:1em; user-select:none; z-index:9999; pointer-events:none; animation-name: fall; animation-timing-function: linear; animation-iteration-count: infinite; }
-  @keyframes fall { 0% { transform: translateY(0px); } 100% { transform: translateY(100vh); } }
+  .snowflake { position:absolute; top:-10px; color:white; font-size:1em; user-select:none; z-index:9999; pointer-events:none; animation: fall linear infinite; }
+  @keyframes fall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
 
   #hero { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100vh; padding:20px; }
   h1 { font-size:2em; margin-bottom:15px; }
@@ -17,7 +17,6 @@
   button:hover { background-color:#ff6363; }
 
   #wishCard { display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding:30px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; }
-  #wishCard h2 { margin-bottom:15px; }
   @keyframes fadeIn { 0% { opacity:0; transform:scale(0.8); } 100% { opacity:1; transform:scale(1); } }
 
   #giftContainer { display:none; position:relative; margin-top:20px; }
@@ -25,17 +24,16 @@
   #giftBox::before { content:""; position:absolute; width:100%; height:10px; background:gold; top:0; left:0; border-radius:5px; }
   #giftBox.open { animation:none; background:gold; }
   #giftMessage { display:none; text-align:center; margin-top:20px; font-size:1.2em; font-weight:bold; color:#ffeb3b; }
-
   @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
 
-  .confetti-piece { position: absolute; width:10px; height:10px; opacity:0.9; }
+  .confetti-piece { position:absolute; width:10px; height:10px; opacity:0.9; }
 
   /* Share popup */
   #sharePopup {
     display:none;
     position:fixed;
     top:0; left:0; width:100%; height:100%;
-    background: rgba(0,0,0,0.85);
+    background:rgba(0,0,0,0.85);
     color:white;
     display:flex;
     align-items:center;
@@ -56,8 +54,8 @@
     cursor:pointer;
   }
   #sharePopup button:hover { background:#218838; }
-
   #countdown { font-size:1.5em; margin-top:10px; color:#ffeb3b; }
+
 </style>
 </head>
 <body>
@@ -98,97 +96,92 @@
 </footer>
 
 <script>
-  // Snowflake generator
+  // --- Bitly short link ---
+  const landingPageURL = "https://bit.ly/magic-xmas2025";
+
+  // Snowflakes
   function createSnowflake() {
-    const snowflake = document.createElement('div');
-    snowflake.classList.add('snowflake');
-    snowflake.textContent = '❄';
-    snowflake.style.left = Math.random() * window.innerWidth + 'px';
-    snowflake.style.fontSize = (Math.random()*20+10)+'px';
-    snowflake.style.animationDuration = (Math.random()*5+5)+'s';
-    document.body.appendChild(snowflake);
-    setTimeout(()=>snowflake.remove(),10000);
+    const snow = document.createElement('div');
+    snow.classList.add('snowflake');
+    snow.textContent = '❄';
+    snow.style.left = Math.random()*window.innerWidth + 'px';
+    snow.style.fontSize = `${Math.random()*20+10}px`;
+    snow.style.animationDuration = `${Math.random()*5+5}s`;
+    document.body.appendChild(snow);
+    setTimeout(()=>snow.remove(), 10000);
   }
   setInterval(createSnowflake, 200);
 
-  // Reveal wish
-  document.getElementById('revealBtn').addEventListener('click', function(){
-    const yourName = document.getElementById('yourName').value.trim();
-    const friendName = document.getElementById('friendName').value.trim();
-    if(!yourName || !friendName){ alert("Please enter both names!"); return; }
-    document.getElementById('friendDisplay').textContent = friendName;
-    document.getElementById('yourDisplay').textContent = yourName;
+  // Reveal
+  document.getElementById('revealBtn').addEventListener('click', () => {
+    const your = document.getElementById('yourName').value.trim();
+    const friend = document.getElementById('friendName').value.trim();
+    if(!your||!friend){ alert("Please enter both names!"); return; }
+    document.getElementById('friendDisplay').textContent = friend;
+    document.getElementById('yourDisplay').textContent = your;
     document.getElementById('wishCard').style.display = 'block';
     document.getElementById('wishCard').scrollIntoView({behavior:"smooth"});
   });
 
-  // Share button + secret gift logic
-  let shareCount = 0;
-  document.getElementById('shareBtn').addEventListener('click', function(){
-    const yourName = document.getElementById('yourName').value.trim();
-    const friendName = document.getElementById('friendName').value.trim();
-    const shareText = `🎄 Look what ${yourName} sent me! A magical Christmas wish just for me, ${friendName}! Get yours here: [INSERT_YOUR_LINK]`;
+  // Sharing logic
+  let shareCount=0;
+  document.getElementById('shareBtn').addEventListener('click', () => {
+    const your = document.getElementById('yourName').value.trim();
+    const friend = document.getElementById('friendName').value.trim();
+    const shareText = `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-
     shareCount++;
-    if(shareCount >= 3){
-      document.getElementById('giftContainer').style.display = 'block';
-    }
+    if(shareCount >= 3) document.getElementById('giftContainer').style.display='block';
   });
 
-  // Gift box click animation + jingle + confetti + popup
+  // Gift click → jingle + confetti + popup
   const giftBox = document.getElementById('giftBox');
   giftBox.addEventListener('click', () => {
     giftBox.classList.add('open');
-    document.getElementById('giftMessage').style.display = 'block';
+    document.getElementById('giftMessage').style.display='block';
     document.getElementById('jingle').play();
     launchConfetti();
-
-    // Show share popup with countdown after 1s
-    setTimeout(()=> {
-      document.getElementById('sharePopup').style.display = 'flex';
+    setTimeout(()=>{
+      document.getElementById('sharePopup').style.display='flex';
       startCountdown(10);
-    }, 1000);
+    },1000);
   });
 
-  // Popup share button
+  // Popup share
   document.getElementById('popupShareBtn').addEventListener('click', () => {
-    const yourName = document.getElementById('yourName').value.trim();
-    const friendName = document.getElementById('friendName').value.trim();
-    const shareText = `🎄 Look what ${yourName} sent me! A magical Christmas wish just for me, ${friendName}! Get yours here: [INSERT_YOUR_LINK]`;
+    const your = document.getElementById('yourName').value.trim();
+    const friend = document.getElementById('friendName').value.trim();
+    const shareText = `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    document.getElementById('sharePopup').style.display = 'none';
+    document.getElementById('sharePopup').style.display='none';
   });
 
-  // Countdown timer function
-  function startCountdown(seconds) {
-    const countdownEl = document.getElementById('countdown');
-    let counter = seconds;
-    countdownEl.textContent = counter;
-    const interval = setInterval(() => {
-      counter--;
-      countdownEl.textContent = counter;
-      if(counter <= 0){
-        clearInterval(interval);
-        countdownEl.textContent = "🎁 Bonus Surprise Unlocked!";
-      }
-    }, 1000);
+  // Countdown
+  function startCountdown(sec){
+    const el = document.getElementById('countdown');
+    let c = sec;
+    el.textContent = c;
+    const iv = setInterval(()=>{
+      c--;
+      el.textContent = c>0?c:"🎁 Bonus Unlocked!";
+      if(c<=0) clearInterval(iv);
+    },1000);
   }
 
-  // Confetti effect
-  function launchConfetti() {
+  // Confetti
+  function launchConfetti(){
     for(let i=0;i<50;i++){
-      const confetti = document.createElement('div');
+      const confetti=document.createElement('div');
       confetti.classList.add('confetti-piece');
-      confetti.style.left = Math.random()*window.innerWidth+'px';
-      confetti.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+      confetti.style.left=`${Math.random()*window.innerWidth}px`;
+      confetti.style.background=`hsl(${Math.random()*360},100%,50%)`;
       document.body.appendChild(confetti);
-      let fallDuration = Math.random()*2+2;
+      const dur = (Math.random()*2+2)*1000;
       confetti.animate([
-        { transform: `translateY(0px) rotate(0deg)` },
-        { transform: `translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)` }
-      ], { duration: fallDuration*1000, easing:'linear' });
-      setTimeout(()=>confetti.remove(), fallDuration*1000);
+        { transform:`translateY(0) rotate(0)` },
+        { transform:`translateY(${window.innerHeight}px) rotate(${Math.random()*360}deg)` }
+      ], { duration: dur, easing:'linear' });
+      setTimeout(()=>confetti.remove(), dur);
     }
   }
 </script>
