@@ -46,6 +46,14 @@
   }
   button:hover { background-color:#ff6363; }
 
+  /* Share Buttons */
+  .share-buttons { display:flex; justify-content:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
+  .share-buttons button { padding:10px 15px; font-size:0.95em; border-radius:8px; background:#1da1f2; border:none; color:white; cursor:pointer; }
+  .share-buttons button.facebook { background:#3b5998; }
+  .share-buttons button.instagram { background:#e1306c; }
+  .share-buttons button.whatsapp { background:#25d366; }
+  .share-buttons button:hover { opacity:0.85; }
+
   /* Wish Card */
   #wishCard { 
     display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); 
@@ -64,33 +72,6 @@
   /* Confetti */
   .confetti-piece { position:absolute; width:10px; height:10px; opacity:0.9; }
 
-  /* Share Popup */
-  #sharePopup {
-    display:none;
-    position:fixed;
-    top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.85);
-    color:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    z-index:10000;
-    padding:20px;
-  }
-  #sharePopup button {
-    margin-top:20px;
-    padding:12px 25px;
-    background:#28a745;
-    color:white;
-    font-size:1em;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-  }
-  #sharePopup button:hover { background:#218838; }
-
   /* Mobile Optimizations */
   @media screen and (max-width: 480px) {
     h1 { font-size:1.5em; }
@@ -99,10 +80,26 @@
     button { font-size:0.95em; padding:10px 20px; }
     #giftBox { width:70px; height:70px; }
     #giftMessage { font-size:1em; }
+    .share-buttons button { font-size:0.85em; padding:8px 12px; }
   }
 </style>
 </head>
 <body>
+
+<!-- Mobile-friendly Top Ad Banner START -->
+<div id="adBannerTop" style="margin: 10px auto; text-align:center; max-width:468px;">
+  <script type="text/javascript">
+    atOptions = {
+      'key' : 'fecfb74566cd7a634ad5bbc0a71c260c',
+      'format' : 'iframe',
+      'height' : 60,
+      'width' : 468,
+      'params' : {}
+    };
+  </script>
+  <script type="text/javascript" src="https://www.highperformanceformat.com/fecfb74566cd7a634ad5bbc0a71c260c/invoke.js"></script>
+</div>
+<!-- Top Ad Banner END -->
 
 <div id="hero">
   <h1>🎅 Enter Your Names for a Magical Christmas Wish!</h1>
@@ -115,22 +112,13 @@
     <h2>Dear <span id="friendDisplay"></span>,</h2>
     <p>🎄 This Christmas, <strong><span id="yourDisplay"></span></strong> wishes you endless joy, magical surprises, and all the cookies you can eat! 🍪✨</p>
     <p>Keep shining bright and sharing smiles!</p>
-    <button id="shareBtn">🎁 Share this Magical Wish</button>
 
-    <!-- Ad Banner START -->
-    <div id="adBanner" style="margin: 20px auto; text-align:center;">
-      <script type="text/javascript">
-        atOptions = {
-          'key' : 'fecfb74566cd7a634ad5bbc0a71c260c',
-          'format' : 'iframe',
-          'height' : 60,
-          'width' : 468,
-          'params' : {}
-        };
-      </script>
-      <script type="text/javascript" src="https://www.highperformanceformat.com/fecfb74566cd7a634ad5bbc0a71c260c/invoke.js"></script>
+    <!-- Share Buttons -->
+    <div class="share-buttons">
+      <button class="whatsapp" id="shareWhatsapp">WhatsApp</button>
+      <button class="facebook" id="shareFacebook">Facebook</button>
+      <button class="instagram" id="shareInstagram">Instagram</button>
     </div>
-    <!-- Ad Banner END -->
 
     <div id="giftContainer">
       <div id="giftBox"></div>
@@ -141,13 +129,6 @@
 
 <!-- Christmas Jingle -->
 <audio id="jingle" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" preload="auto"></audio>
-
-<!-- Share Popup -->
-<div id="sharePopup">
-  <h2>🎄 Spread the Christmas Magic! 🎄</h2>
-  <p>Share this magical wish with your friends to unlock a bonus surprise!</p>
-  <button id="popupShareBtn">Share Now</button>
-</div>
 
 <footer>
   <p>Spread the Christmas magic 🎄✨</p>
@@ -181,35 +162,34 @@
   });
 
   // Sharing logic
-  let shareCount=0;
-  document.getElementById('shareBtn').addEventListener('click', () => {
+  function getShareText() {
     const your = document.getElementById('yourName').value.trim();
     const friend = document.getElementById('friendName').value.trim();
-    const shareText = `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    shareCount++;
-    if(shareCount >= 3) document.getElementById('giftContainer').style.display='block';
+    return `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
+  }
+
+  document.getElementById('shareWhatsapp').addEventListener('click', () => {
+    const text = encodeURIComponent(getShareText());
+    window.open(`https://wa.me/?text=${text}`, '_blank');
   });
 
-  // Gift click → jingle + confetti + popup
+  document.getElementById('shareFacebook').addEventListener('click', () => {
+    const url = encodeURIComponent(landingPageURL);
+    const quote = encodeURIComponent(getShareText());
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
+  });
+
+  document.getElementById('shareInstagram').addEventListener('click', () => {
+    alert("Instagram sharing is limited on web. Copy the link and share in Instagram app:\n\n" + landingPageURL);
+  });
+
+  // Gift click → jingle + confetti
   const giftBox = document.getElementById('giftBox');
   giftBox.addEventListener('click', () => {
     giftBox.classList.add('open');
     document.getElementById('giftMessage').style.display='block';
     document.getElementById('jingle').play();
     launchConfetti();
-    setTimeout(()=>{
-      document.getElementById('sharePopup').style.display='flex';
-    },1000);
-  });
-
-  // Popup share
-  document.getElementById('popupShareBtn').addEventListener('click', () => {
-    const your = document.getElementById('yourName').value.trim();
-    const friend = document.getElementById('friendName').value.trim();
-    const shareText = `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
-    document.getElementById('sharePopup').style.display='none';
   });
 
   // Confetti
