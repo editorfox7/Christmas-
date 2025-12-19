@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magical Christmas Wish 🎄✨</title>
 
-<!-- Open Graph for WhatsApp, Facebook, etc. -->
+<!-- Open Graph -->
 <meta property="og:title" content="🎄 A Magical Christmas Wish Just for You! 🎅✨" />
 <meta property="og:description" content="Enter your names and share a magical Christmas wish with your friends!" />
 <meta property="og:image" content="https://example.com/christmas-preview.jpg" />
@@ -19,69 +19,46 @@
 <meta name="twitter:image" content="https://example.com/christmas-preview.jpg" />
 
 <style>
-  /* Base Styles */
-  body, html { 
-    margin:0; padding:0; font-family: Arial,sans-serif; 
-    background: linear-gradient(to bottom, #1b2735, #090a0f); 
-    color:white; overflow-x:hidden; height:100%; 
-  }
-  .snowflake { 
-    position:absolute; top:-10px; color:white; font-size:1em; 
-    user-select:none; z-index:9999; pointer-events:none; animation: fall linear infinite; 
-  }
-  @keyframes fall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
+body, html { margin:0; padding:0; font-family: Arial,sans-serif; background: linear-gradient(to bottom, #1b2735, #090a0f); color:white; overflow-x:hidden; height:100%; }
+.snowflake { position:absolute; top:-10px; color:white; font-size:1em; user-select:none; z-index:9999; pointer-events:none; animation: fall linear infinite; }
+@keyframes fall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
 
-  /* Hero Section */
-  #hero { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100vh; padding:20px; }
-  h1 { font-size:2em; margin-bottom:15px; }
-  p { margin-bottom:25px; font-size:1.2em; }
+#hero { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100vh; padding:20px; }
+h1 { font-size:2em; margin-bottom:15px; }
+p { margin-bottom:25px; font-size:1.2em; }
 
-  /* Inputs & Buttons */
-  input[type=text] { 
-    padding:12px; margin:5px; border-radius:8px; border:none; width:80%; max-width:300px; font-size:1em; 
-  }
-  button { 
-    padding:12px 25px; border-radius:8px; border:none; background-color:#ff3c3c; 
-    color:white; font-size:1em; cursor:pointer; margin-top:10px; 
-  }
-  button:hover { background-color:#ff6363; }
+input[type=text] { padding:12px; margin:5px; border-radius:8px; border:none; width:80%; max-width:300px; font-size:1em; }
+button { padding:12px 25px; border-radius:8px; border:none; background-color:#ff3c3c; color:white; font-size:1em; cursor:pointer; margin-top:10px; }
+button:hover { background-color:#ff6363; }
 
-  /* Share Buttons */
-  .share-buttons { display:flex; justify-content:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
-  .share-buttons button { padding:10px 15px; font-size:0.95em; border-radius:8px; background:#1da1f2; border:none; color:white; cursor:pointer; }
-  .share-buttons button.facebook { background:#3b5998; }
-  .share-buttons button.instagram { background:#e1306c; }
-  .share-buttons button.whatsapp { background:#25d366; }
-  .share-buttons button:hover { opacity:0.85; }
+.share-buttons { display:flex; justify-content:center; gap:10px; margin-top:15px; flex-wrap:wrap; }
+.share-buttons button { padding:10px 15px; font-size:0.95em; border-radius:8px; border:none; color:white; cursor:pointer; }
+.share-buttons button.whatsapp { background:#25d366; }
+.share-buttons button.facebook { background:#3b5998; }
+.share-buttons button.instagram { background:#e1306c; }
+.share-buttons button:hover { opacity:0.85; }
 
-  /* Wish Card */
-  #wishCard { 
-    display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); 
-    padding:20px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; 
-  }
-  @keyframes fadeIn { 0% { opacity:0; transform:scale(0.8); } 100% { opacity:1; transform:scale(1); } }
+#wishCard { display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding:20px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; }
+@keyframes fadeIn { 0% { opacity:0; transform:scale(0.8); } 100% { opacity:1; transform:scale(1); } }
 
-  /* Gift Box */
-  #giftContainer { display:none; position:relative; margin-top:20px; }
-  #giftBox { width:80px; height:80px; background:red; border-radius:15px; position:relative; cursor:pointer; margin:0 auto; animation: bounce 1s ease infinite alternate; }
-  #giftBox::before { content:""; position:absolute; width:100%; height:8px; background:gold; top:0; left:0; border-radius:5px; }
-  #giftBox.open { animation:none; background:gold; }
-  #giftMessage { display:none; text-align:center; margin-top:15px; font-size:1.1em; font-weight:bold; color:#ffeb3b; }
-  @keyframes bounce { 0% { transform: translateY(0) } 100% { transform: translateY(-10px) } }
+#giftContainer { display:none; position:relative; margin-top:20px; }
+#giftBox { width:80px; height:80px; background:red; border-radius:15px; position:relative; cursor:pointer; margin:0 auto; animation: bounce 1s ease infinite alternate; }
+#giftBox::before { content:""; position:absolute; width:100%; height:8px; background:gold; top:0; left:0; border-radius:5px; }
+#giftBox.open { animation:none; background:gold; }
+#giftMessage { display:none; text-align:center; margin-top:15px; font-size:1.1em; font-weight:bold; color:#ffeb3b; }
+@keyframes bounce { 0% { transform: translateY(0) } 100% { transform: translateY(-10px) } }
 
-  /* Confetti */
-  .confetti-piece { position:absolute; width:10px; height:10px; opacity:0.9; }
+.confetti-piece { position:absolute; width:10px; height:10px; opacity:0.9; }
 
-  /* Mobile Optimizations */
-  @media screen and (max-width: 480px) {
-    h1 { font-size:1.5em; }
-    p { font-size:1em; }
-    input[type=text] { font-size:0.95em; padding:10px; }
-    button { font-size:0.95em; padding:10px 20px; }
-    #giftBox { width:70px; height:70px; }
-    #giftMessage { font-size:1em; }
-    .share-buttons button { font-size:0.85em; padding:8px 12px; }
-  }
+@media screen and (max-width: 480px) {
+  h1 { font-size:1.5em; }
+  p { font-size:1em; }
+  input[type=text] { font-size:0.95em; padding:10px; }
+  button { font-size:0.95em; padding:10px 20px; }
+  #giftBox { width:70px; height:70px; }
+  #giftMessage { font-size:1em; }
+  .share-buttons button { font-size:0.85em; padding:8px 12px; }
+}
 </style>
 </head>
 <body>
@@ -113,7 +90,16 @@
     <p>🎄 This Christmas, <strong><span id="yourDisplay"></span></strong> wishes you endless joy, magical surprises, and all the cookies you can eat! 🍪✨</p>
     <p>Keep shining bright and sharing smiles!</p>
 
-    <!-- Share Buttons -->
+    <!-- Benefit Line -->
+    <p style="color:#ffeb3b; font-weight:bold; margin-top:15px;">
+        🎁 Share with your friends to unlock a secret Christmas gift! 🌟
+    </p>
+
+    <!-- Share Progress -->
+    <p id="shareProgress" style="color:#ffd700; font-weight:bold; margin-bottom:10px;">
+        Shares: 0 / 3
+    </p>
+
     <div class="share-buttons">
       <button class="whatsapp" id="shareWhatsapp">WhatsApp</button>
       <button class="facebook" id="shareFacebook">Facebook</button>
@@ -127,7 +113,6 @@
   </div>
 </div>
 
-<!-- Christmas Jingle -->
 <audio id="jingle" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" preload="auto"></audio>
 
 <footer>
@@ -135,10 +120,10 @@
 </footer>
 
 <script>
-  const landingPageURL = "https://christmas-lyart-chi.vercel.app";
+const landingPageURL = "https://christmas-lyart-chi.vercel.app";
 
-  // Snowflakes
-  function createSnowflake() {
+// Snowflakes
+function createSnowflake() {
     const snow = document.createElement('div');
     snow.classList.add('snowflake');
     snow.textContent = '❄';
@@ -147,11 +132,11 @@
     snow.style.animationDuration = `${Math.random()*5+5}s`;
     document.body.appendChild(snow);
     setTimeout(()=>snow.remove(), 10000);
-  }
-  setInterval(createSnowflake, 200);
+}
+setInterval(createSnowflake, 200);
 
-  // Reveal wish
-  document.getElementById('revealBtn').addEventListener('click', () => {
+// Reveal wish
+document.getElementById('revealBtn').addEventListener('click', () => {
     const your = document.getElementById('yourName').value.trim();
     const friend = document.getElementById('friendName').value.trim();
     if(!your||!friend){ alert("Please enter both names!"); return; }
@@ -159,41 +144,66 @@
     document.getElementById('yourDisplay').textContent = your;
     document.getElementById('wishCard').style.display = 'block';
     document.getElementById('wishCard').scrollIntoView({behavior:"smooth"});
-  });
+});
 
-  // Sharing logic
-  function getShareText() {
+// Sharing logic
+function getShareText() {
     const your = document.getElementById('yourName').value.trim();
     const friend = document.getElementById('friendName').value.trim();
     return `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
-  }
+}
 
-  document.getElementById('shareWhatsapp').addEventListener('click', () => {
+// WhatsApp
+document.getElementById('shareWhatsapp').addEventListener('click', () => {
     const text = encodeURIComponent(getShareText());
-    window.open(`https://wa.me/?text=${text}`, '_blank');
-  });
+    const appURL = `whatsapp://send?text=${text}`;
+    window.location.href = appURL;
+});
 
-  document.getElementById('shareFacebook').addEventListener('click', () => {
-    const url = encodeURIComponent(landingPageURL);
+// Facebook
+document.getElementById('shareFacebook').addEventListener('click', () => {
     const quote = encodeURIComponent(getShareText());
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
-  });
+    const fbAppURL = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(landingPageURL)}&quote=${quote}`;
+    window.location.href = fbAppURL;
+});
 
-  document.getElementById('shareInstagram').addEventListener('click', () => {
-    alert("Instagram sharing is limited on web. Copy the link and share in Instagram app:\n\n" + landingPageURL);
-  });
+// Instagram
+document.getElementById('shareInstagram').addEventListener('click', () => {
+    alert("Instagram sharing: Copy this link and share with your friends in the Instagram app:\n\n" + landingPageURL);
+});
 
-  // Gift click → jingle + confetti
-  const giftBox = document.getElementById('giftBox');
-  giftBox.addEventListener('click', () => {
+// Gift box unlock after 3 shares with progress display
+const giftBox = document.getElementById('giftBox');
+let shareCount = 0;
+const requiredShares = 3;
+const shareProgress = document.getElementById('shareProgress');
+
+function updateShareProgress() {
+    shareProgress.textContent = `Shares: ${shareCount} / ${requiredShares}`;
+}
+
+document.querySelectorAll('.share-buttons button').forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (shareCount < requiredShares) {
+            shareCount++;
+            updateShareProgress();
+            if(shareCount >= requiredShares && document.getElementById('giftContainer').style.display==='none') {
+                document.getElementById('giftContainer').style.display='block';
+            }
+        }
+    });
+});
+
+// Gift click → jingle + confetti
+giftBox.addEventListener('click', () => {
     giftBox.classList.add('open');
     document.getElementById('giftMessage').style.display='block';
     document.getElementById('jingle').play();
     launchConfetti();
-  });
+});
 
-  // Confetti
-  function launchConfetti(){
+// Confetti
+function launchConfetti(){
     for(let i=0;i<50;i++){
       const confetti=document.createElement('div');
       confetti.classList.add('confetti-piece');
@@ -207,8 +217,7 @@
       ], { duration: dur, easing:'linear' });
       setTimeout(()=>confetti.remove(), dur);
     }
-  }
+}
 </script>
-
 </body>
 </html>
