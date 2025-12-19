@@ -4,31 +4,67 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Magical Christmas Wish 🎄✨</title>
+
+<!-- Open Graph for WhatsApp, Facebook, etc. -->
+<meta property="og:title" content="🎄 A Magical Christmas Wish Just for You! 🎅✨" />
+<meta property="og:description" content="Enter your names and share a magical Christmas wish with your friends!" />
+<meta property="og:image" content="https://example.com/christmas-preview.jpg" />
+<meta property="og:url" content="https://christmas-lyart-chi.vercel.app" />
+<meta property="og:type" content="website" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="🎄 A Magical Christmas Wish Just for You! 🎅✨" />
+<meta name="twitter:description" content="Enter your names and share a magical Christmas wish with your friends!" />
+<meta name="twitter:image" content="https://example.com/christmas-preview.jpg" />
+
 <style>
-  body, html { margin:0; padding:0; font-family: Arial,sans-serif; background: linear-gradient(to bottom, #1b2735, #090a0f); color:white; overflow-x:hidden; height:100%; }
-  .snowflake { position:absolute; top:-10px; color:white; font-size:1em; user-select:none; z-index:9999; pointer-events:none; animation: fall linear infinite; }
+  /* Base Styles */
+  body, html { 
+    margin:0; padding:0; font-family: Arial,sans-serif; 
+    background: linear-gradient(to bottom, #1b2735, #090a0f); 
+    color:white; overflow-x:hidden; height:100%; 
+  }
+  .snowflake { 
+    position:absolute; top:-10px; color:white; font-size:1em; 
+    user-select:none; z-index:9999; pointer-events:none; animation: fall linear infinite; 
+  }
   @keyframes fall { 0% { transform: translateY(0); } 100% { transform: translateY(100vh); } }
 
+  /* Hero Section */
   #hero { display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; height:100vh; padding:20px; }
   h1 { font-size:2em; margin-bottom:15px; }
   p { margin-bottom:25px; font-size:1.2em; }
-  input[type=text] { padding:10px; margin:5px; border-radius:8px; border:none; width:200px; font-size:1em; }
-  button { padding:10px 20px; border-radius:8px; border:none; background-color:#ff3c3c; color:white; font-size:1em; cursor:pointer; margin-top:10px; }
+
+  /* Inputs & Buttons */
+  input[type=text] { 
+    padding:12px; margin:5px; border-radius:8px; border:none; width:80%; max-width:300px; font-size:1em; 
+  }
+  button { 
+    padding:12px 25px; border-radius:8px; border:none; background-color:#ff3c3c; 
+    color:white; font-size:1em; cursor:pointer; margin-top:10px; 
+  }
   button:hover { background-color:#ff6363; }
 
-  #wishCard { display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); padding:30px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; }
+  /* Wish Card */
+  #wishCard { 
+    display:none; background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); 
+    padding:20px; border-radius:15px; margin-top:20px; animation: fadeIn 1s ease-in-out forwards; max-width:90%; 
+  }
   @keyframes fadeIn { 0% { opacity:0; transform:scale(0.8); } 100% { opacity:1; transform:scale(1); } }
 
+  /* Gift Box */
   #giftContainer { display:none; position:relative; margin-top:20px; }
-  #giftBox { width:100px; height:100px; background:red; border-radius:15px; position:relative; cursor:pointer; margin:0 auto; animation: bounce 1s ease infinite alternate; }
-  #giftBox::before { content:""; position:absolute; width:100%; height:10px; background:gold; top:0; left:0; border-radius:5px; }
+  #giftBox { width:80px; height:80px; background:red; border-radius:15px; position:relative; cursor:pointer; margin:0 auto; animation: bounce 1s ease infinite alternate; }
+  #giftBox::before { content:""; position:absolute; width:100%; height:8px; background:gold; top:0; left:0; border-radius:5px; }
   #giftBox.open { animation:none; background:gold; }
-  #giftMessage { display:none; text-align:center; margin-top:20px; font-size:1.2em; font-weight:bold; color:#ffeb3b; }
-  @keyframes bounce { 0% { transform: translateY(0); } 100% { transform: translateY(-10px); } }
+  #giftMessage { display:none; text-align:center; margin-top:15px; font-size:1.1em; font-weight:bold; color:#ffeb3b; }
+  @keyframes bounce { 0% { transform: translateY(0) } 100% { transform: translateY(-10px) } }
 
+  /* Confetti */
   .confetti-piece { position:absolute; width:10px; height:10px; opacity:0.9; }
 
-  /* Share popup */
+  /* Share Popup */
   #sharePopup {
     display:none;
     position:fixed;
@@ -45,7 +81,7 @@
   }
   #sharePopup button {
     margin-top:20px;
-    padding:10px 20px;
+    padding:12px 25px;
     background:#28a745;
     color:white;
     font-size:1em;
@@ -54,8 +90,16 @@
     cursor:pointer;
   }
   #sharePopup button:hover { background:#218838; }
-  #countdown { font-size:1.5em; margin-top:10px; color:#ffeb3b; }
 
+  /* Mobile Optimizations */
+  @media screen and (max-width: 480px) {
+    h1 { font-size:1.5em; }
+    p { font-size:1em; }
+    input[type=text] { font-size:0.95em; padding:10px; }
+    button { font-size:0.95em; padding:10px 20px; }
+    #giftBox { width:70px; height:70px; }
+    #giftMessage { font-size:1em; }
+  }
 </style>
 </head>
 <body>
@@ -80,14 +124,13 @@
   </div>
 </div>
 
-<!-- Short Christmas Jingle -->
+<!-- Christmas Jingle -->
 <audio id="jingle" src="https://freesound.org/data/previews/331/331912_3248244-lq.mp3" preload="auto"></audio>
 
-<!-- Share Popup with Countdown -->
+<!-- Share Popup -->
 <div id="sharePopup">
   <h2>🎄 Spread the Christmas Magic! 🎄</h2>
   <p>Share this magical wish with your friends to unlock a bonus surprise!</p>
-  <div id="countdown">10</div>
   <button id="popupShareBtn">Share Now</button>
 </div>
 
@@ -111,7 +154,7 @@
   }
   setInterval(createSnowflake, 200);
 
-  // Reveal
+  // Reveal wish
   document.getElementById('revealBtn').addEventListener('click', () => {
     const your = document.getElementById('yourName').value.trim();
     const friend = document.getElementById('friendName').value.trim();
@@ -142,7 +185,6 @@
     launchConfetti();
     setTimeout(()=>{
       document.getElementById('sharePopup').style.display='flex';
-      startCountdown(10);
     },1000);
   });
 
@@ -154,18 +196,6 @@
     window.open(`https://wa.me/?text=${encodeURIComponent(shareText)}`, '_blank');
     document.getElementById('sharePopup').style.display='none';
   });
-
-  // Countdown
-  function startCountdown(sec){
-    const el = document.getElementById('countdown');
-    let c = sec;
-    el.textContent = c;
-    const iv = setInterval(()=>{
-      c--;
-      el.textContent = c>0?c:"🎁 Bonus Unlocked!";
-      if(c<=0) clearInterval(iv);
-    },1000);
-  }
 
   // Confetti
   function launchConfetti(){
