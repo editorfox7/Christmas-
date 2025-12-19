@@ -63,7 +63,7 @@ button:hover { background-color:#ff6363; }
 </head>
 <body>
 
-<!-- Mobile-friendly Top Ad Banner START -->
+<!-- Top Ad Banner START -->
 <div id="adBannerTop" style="margin: 10px auto; text-align:center; max-width:468px;">
   <script type="text/javascript">
     atOptions = {
@@ -153,23 +153,26 @@ function getShareText() {
     return `🎄 Look what ${your} sent me! A magical Christmas wish just for me, ${friend}! Get yours here: ${landingPageURL}`;
 }
 
-// WhatsApp
+// WhatsApp - direct open
 document.getElementById('shareWhatsapp').addEventListener('click', () => {
     const text = encodeURIComponent(getShareText());
-    const appURL = `whatsapp://send?text=${text}`;
-    window.location.href = appURL;
+    window.open(`https://wa.me/?text=${text}`, '_blank');
 });
 
-// Facebook
+// Facebook - direct open
 document.getElementById('shareFacebook').addEventListener('click', () => {
+    const url = encodeURIComponent(landingPageURL);
     const quote = encodeURIComponent(getShareText());
-    const fbAppURL = `fb://facewebmodal/f?href=https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(landingPageURL)}&quote=${quote}`;
-    window.location.href = fbAppURL;
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
 });
 
-// Instagram
+// Instagram - copy link
 document.getElementById('shareInstagram').addEventListener('click', () => {
-    alert("Instagram sharing: Copy this link and share with your friends in the Instagram app:\n\n" + landingPageURL);
+    navigator.clipboard.writeText(landingPageURL).then(() => {
+        alert("🎄 Link copied! Paste it in Instagram DM or Story to share the magical wish!");
+    }).catch(() => {
+        alert("Please copy this link manually:\n" + landingPageURL);
+    });
 });
 
 // Gift box unlock after 3 shares with progress display
